@@ -1,5 +1,5 @@
 # Introduction
-This is a boilerplate plugin.
+Discover, add & control WLED devices
 
 # Installation
 1) Create a new plugin over the OpenHaus backend HTTP API
@@ -11,23 +11,18 @@ Add plugin item via HTTP API:<br />
 [PUT] `http://{{HOST}}:{{PORT}}/api/plugins/`
 ```json
 {
-   "name":"Plugin Boilerplate",
+   "name":"WLED Integration",
    "version": "1.0.0",
    "intents":[
       "devices",
       "endpoints",
-      "plugins",
-      "rooms",
-      "ssdp",
-      "store",
-      "users",
-      "vault"
+      "mdns"
    ],
-   "uuid": "00000000-0000-0000-0000-000000000000"
+   "uuid": "e0f59a54-cb97-4199-8a1b-dfed5ea680ac"
 }
-
 ```
+
 Mount the source code into the backend plugins folder
 ```sh
-sudo mount --bind ~/projects/OpenHaus/plugins/plugin-boilerplate/ ~/projects/OpenHaus/backend/plugins/00000000-0000-0000-0000-000000000000/
+sudo mount --bind ~/projects/OpenHaus/plugins/oh-plg-wled/ ~/projects/OpenHaus/backend/plugins/e0f59a54-cb97-4199-8a1b-dfed5ea680ac/
 ```
