@@ -45,11 +45,18 @@ module.exports = (logger, [
                 interface: iface._id,
                 params: [{
                     type: "number",
+                    key: "color",
+                    min: 0,
+                    max: 360,
+                    classes: ["hue-fader"]
+                }, {
+                    type: "number",
                     key: "brightness",
                     min: 0,
-                    max: 255,
-                    value: 255
-                }, {
+                    max: 100,
+                    value: 100,
+                    classes: ["brightness-fader"]
+                }/*, {
                     type: "number",
                     key: "r",
                     min: 0,
@@ -67,7 +74,7 @@ module.exports = (logger, [
                     min: 0,
                     max: 255,
                     value: 128
-                }]
+                }*/]
             }, {
                 name: "Colorloop",
                 interface: iface._id,
@@ -83,7 +90,8 @@ module.exports = (logger, [
                     key: "saturation",
                     min: 0,
                     max: 255,
-                    value: 255
+                    value: 255,
+                    classes: ["saturation-fader"]
                 }]
             }, {
                 name: "Solid",

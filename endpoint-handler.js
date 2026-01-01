@@ -3,6 +3,8 @@ const { WebSocket } = require("ws");
 const infinity = require("../../helper/infinity.js");
 const debounce = require("../../helper/debounce.js");
 const request = require("../../helper/request.js");
+const map = require("../../helper/map.js");
+const { hueToRgb } = require("../../helper/colors.js");
 
 
 module.exports = (logger, [
@@ -131,11 +133,8 @@ module.exports = (logger, [
                     //v: false does not work via WS API
                 };
 
-                endpoint.commands.forEach((command) => {
-                    command.setHandler((cmd, iface, params, done) => {
-
-                        // override array, with lean object
-                        params = params.lean();
+                endpoint.commands.forEach((cmd) => {
+                    cmd.setHandler(({ params }, done) => {
 
                         // default value for command
                         // turn on on every command 
@@ -151,6 +150,15 @@ module.exports = (logger, [
 
                         } else if (cmd.alias === "COLOR") {
 
+                            let { color = 0, brightness = 100 } = params.lean();
+                            let [r, g, b] = hueToRgb(color);
+                            obj.bri = Math.floor(map(brightness, 0, 100, 0, 255));
+
+                            obj.seg[0].col = [
+                                [r, g, b]
+                            ];
+
+                            /*
                             obj.bri = Number(params.brightness || 255);
 
                             obj.seg[0].col = [
@@ -160,6 +168,7 @@ module.exports = (logger, [
                                     Number(params.b)
                                 ]
                             ];
+                            */
 
                         } else {
 
@@ -171,6 +180,8 @@ module.exports = (logger, [
 
                         }
 
+                        // override array, with lean object
+                        params = params.lean();
 
                         if (cmd.name === "Colorloop") {
 
@@ -188,6 +199,7 @@ module.exports = (logger, [
 
                         } else if (cmd.name === "Wecker") {
 
+                            obj.bri = 255; // allways full brightness
                             obj.transition = Number(params?.transition || 1000);
 
                             Object.assign(obj.seg[0], {
